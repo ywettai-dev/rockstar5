@@ -15,7 +15,7 @@ A work-in-progress source code for RSD course 5.
 - property shorthand
 - javascript တွင် **Class** ကြေညာနည်း
 - nodejs **module export**အသုံးချနည်း
-- back-tick ကို အသုံးပြုပြီး `${}` နှင့် variable တွေကို string နှင့်အတူရေးနည်း (ES6)
+- back-tick (\`)ကို အသုံးပြုပြီး `${}` နှင့် variable တွေကို string နှင့်အတူရေးနည်း (ES6)
 - object ကို immune ဖြစ်အောင် `Object.freeze()` method ကိုသုံးနည်း 
 
 
