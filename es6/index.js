@@ -11,6 +11,7 @@
  * javascript တွင် Class ကြေညာနည်း
  * nodejs module export အသုံးချနည်း
  * back-tick ကို အသုံးပြုပြီး ${} နှင့် variable တွေကို string နှင့်အတူရေးနည်း [ES6]
+ * object ကို immune ဖြစ်အောင် Object.freeze() method ကိုသုံးနည်း 
  */
 
 var math = require('./math');
@@ -80,3 +81,17 @@ tai.study();
 // function from module exports [nodejs]
 console.log(math.PI);
 
+// Object.freeze() example
+let stdNames = ['Dennis', 'Janes', 'Shawn', 'Mattdrew'];
+
+Object.freeze(stdNames);
+
+stdNames[0] = 'Daniels'; // fails silently
+
+// throw TypeErros
+function fail() {
+   'use strict'
+   stdNames.push(0);
+}
+
+fail();

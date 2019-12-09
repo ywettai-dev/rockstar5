@@ -17,6 +17,7 @@ A work-in-progress source code for RSD course 5.
    <li>javascript တွင် Class ကြေညာနည်း</li>
    <li>nodejs module export အသုံးချနည်း</li>
    <li>back-tick ကို အသုံးပြုပြီး ${} နှင့် variable တွေကို string နှင့်အတူရေးနည်း [ES6]</li>
+   <li>object ကို immune ဖြစ်အောင် Object.freeze() method ကိုသုံးနည်း </li>
 </ul>
 
 
