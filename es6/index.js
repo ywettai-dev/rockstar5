@@ -12,6 +12,7 @@
  * nodejs module export အသုံးချနည်း
  * back-tick ကို အသုံးပြုပြီး ${} နှင့် variable တွေကို string နှင့်အတူရေးနည်း [ES6]
  * object ကို immune ဖြစ်အောင် Object.freeze() method ကိုသုံးနည်း 
+ * functional programming example makeAdjectifier
  */
 
 var math = require('./math');
@@ -89,9 +90,20 @@ Object.freeze(stdNames);
 stdNames[0] = 'Daniels'; // fails silently
 
 // throw TypeErros
-function fail() {
+/*function fail() {
    'use strict'
    stdNames.push(0);
 }
+fail();*/
 
-fail();
+// functional programming example
+
+function makeAdjectifier(adjective) {
+   return function (string) {
+      return `${adjective} ${string}`;
+   };
+}
+
+let coolifier = makeAdjectifier("cool");
+
+coolifier("programmer");
