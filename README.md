@@ -4,7 +4,7 @@ A work-in-progress source code for RSD course 5.
 
 # File content
 
-### ES6 (ECMA2015)
+### ES6 (ECMA2015) 🚀
 
 - **variable** ကြေညာနည်း [var, let, const]
 - `var` သည် function-scope/ top-level/ global variable
