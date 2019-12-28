@@ -7,23 +7,19 @@ import Item from './item';
 
 
 class App extends React.Component {
-  constructor() {
-    super();
-    this.state = {
-      data: [
-        { '_id': 1, 'name': 'Alice' },
-        { '_id': 2, 'name': 'Joce' },
-      ]
-    }
-    this.autoid = this.state.data.length;
 
-    this.inputPeople = React.createRef();
-    this.addPeople = this.addPeople.bind(this);
-
-    this.removePeople = this.removePeople.bind(this);
+  state = {
+    data: [
+      { '_id': 1, 'name': 'Alice' },
+      { '_id': 2, 'name': 'Jollie' },
+    ]
   }
 
-  addPeople() {
+  inputPeople = React.createRef();
+
+  autoid = this.state.data.length;
+
+  addPeople = () => {
     let data = this.state.data;
     let name = this.inputPeople.current.value;
     data.push({ '_id': ++this.autoid, 'name': name });
@@ -38,7 +34,7 @@ class App extends React.Component {
     })*/
   }
 
-  removePeople(_id) {
+  removePeople = (_id) => {
     let data = this.state.data.filter(item => item._id !== _id);
     this.setState({
       data: data
