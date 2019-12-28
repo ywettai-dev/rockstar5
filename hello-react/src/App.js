@@ -3,23 +3,8 @@
  * props တွေက Read only သာဖြစ်
  **/
 import React from 'react';
+import Item from './item';
 
-class Item extends React.Component {
-  render() {
-    return (
-      <div>
-        <li>
-          {this.props.item.name}
-          <a href="#/" onClick={() => {
-            this.props.removePeople(this.props.item._id)
-          }}>
-            &times;
-          </a>
-        </li>
-      </div>
-    )
-  }
-}
 
 class App extends React.Component {
   constructor() {
