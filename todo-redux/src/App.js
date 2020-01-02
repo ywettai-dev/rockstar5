@@ -55,7 +55,7 @@ var ReduxApp = connect(state => {
     count: state.filter(item => item.status === 0).length,
   }
 }, dispatch => {
-  // method to props 
+  // dispatch/method to props 
   return {
     add: subject => dispatch({ type: 'ADD', subject: subject }),
     delete: _id => dispatch({ type: 'DELETE', _id: _id }),
