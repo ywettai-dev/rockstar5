@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+   <meta charset="UTF-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <meta http-equiv="X-UA-Compatible" content="ie=edge">
+   <title>Babel</title>
+</head>
+
+<body>
+   <div id="app"></div>
+
+   <script src="js/babel.min.js"></script>
+   <script src="js/react.development.js"></script>
+   <script src="js/react-dom.development.js"></script>
+
+   <script type="text/babel">
+      const MyContext = React.createContext("React Hook. Yea, I am hooked!");
+
+      const App = props => (
+         //<MyContext.Provider value="React.createContext()">
+         <Header />
+         //</MyContext.Provider>
+      );
+
+      const Header = props => (
+         <div><Title /></div>
+      )
+
+      const Title = props => {
+         //<MyContext.Consumer>
+         //{value => <h1>{value}</h1>}
+         //</MyContext.Consumer>
+         const value = React.useContext(MyContext);
+         return <h1>{value}</h1>
+      }
+
+      ReactDOM.render(<App />, document.getElementById('app'));
+   </script>
+</body>
+
+</html>

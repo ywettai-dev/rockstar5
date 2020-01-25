@@ -4,34 +4,55 @@ import DoneList from './DoneList';
 
 class App extends React.Component {
   state = {
-    items: [
-      { _id: '1', subject: 'Milk', status: 0 },
-      { _id: '2', subject: 'Butter', status: 1 },
-      { _id: '3', subject: 'Egg', status: 0 },
-      { _id: '4', subject: 'Flour', status: 0 },
-      { _id: '5', subject: 'Salt', status: 1 },
-      { _id: '6', subject: 'Sugar', status: 0 },
-    ]
+    // items: [
+    //   { _id: '1', subject: 'Milk', status: 0 },
+    //   { _id: '2', subject: 'Butter', status: 1 },
+    //   { _id: '3', subject: 'Egg', status: 0 },
+    //   { _id: '4', subject: 'Flour', status: 0 },
+    //   { _id: '5', subject: 'Salt', status: 1 },
+    //   { _id: '6', subject: 'Sugar', status: 0 },
+    // ]
+    items: []
   }
 
   inputItem = React.createRef();
 
-  autoId = this.state.items.length;
+  //autoId = this.state.items.length;
+
+  api = "http://localhost:8000/tasks";
+
+  componentDidMount() {
+    fetch(this.api).then(res => res.json()).then(items => {
+      this.setState({ items });
+    });
+  }
 
   addItem = () => {
-    this.setState({
-      items: [
-        ...this.state.items,
-        {
-          _id: `${++this.autoId}`,
-          subject: this.inputItem.current.value,
-          status: 0
-        }
-      ]
-    })
+    // this.setState({
+    //   items: [
+    //     ...this.state.items,
+    //     {
+    //       _id: `${++this.autoId}`,
+    //       subject: this.inputItem.current.value,
+    //       status: 0
+    //     }
+    //   ]
+    // })
+    fetch(this.api, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ subject: this.inputItem.current.value })
+    }).then(res => res.json().then(item => {
+      this.setState({
+        items: [...this.state.items, item]
+      });
+    }));
   }
 
   removeItem = (_id) => {
+    fetch(`${this.api}/${_id}`, { method: 'DELETE' });
     this.setState({
       items: this.state.items.filter(item => item._id !== _id)
     })
@@ -40,7 +61,18 @@ class App extends React.Component {
   toggle = (_id) => {
     this.setState({
       items: this.state.items.map(item => {
-        if (item._id === _id) item.status = +!item.status;
+        //if (item._id === _id) item.status = +!item.status;
+        if (item._id === _id) {
+          item.status = +!item.status;
+
+          fetch(`${this.api}`, {
+            method: 'PUT',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ status: item.status })
+          })
+        }
         return item;
       })
     })

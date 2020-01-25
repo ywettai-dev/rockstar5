@@ -32,7 +32,7 @@ app.post('/tasks', function (req, res) {
       msg: "Missing Subject!"
    });
 
-   db.tasks.insert({ subject: subject, status: 0 }, function (err, data) {
+   db.tasks.insert({ subject, status: 0 }, function (err, data) {
       res.status(200).json(data);
    });
 });
