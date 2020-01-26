@@ -3,7 +3,10 @@ import React, { useState, useEffect } from 'react';
 const List = props => {
   return (
     <li>
-      {props.name}
+      {props.item.subject}
+      <a href="#/" onClick={() => {
+        props.remove(props.item._id)
+      }}>&times;</a>
     </li>
   )
 };
@@ -40,7 +43,8 @@ const App = props => {
   }
 
   let remove = (_id) => {
-
+    fetch(`${api}/${_id}`, { method: 'DELETE' });
+    setItem(items.filter(item => item._id !== _id));
   }
 
   return (
@@ -50,14 +54,15 @@ const App = props => {
           items.map(item =>
             <List
               key={item._id}
-              name={item.subject}
+              item={item}
+              remove={remove}
             />
           )
         }
       </ul>
       <input type="text" ref={input}></input>
       <button onClick={add}>Add</button>
-    </div>
+    </div >
   )
 }
 

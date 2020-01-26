@@ -39,9 +39,9 @@ var store = createStore(function (state = [], action) {
 
 var api = "http://localhost:8000/tasks";
 fetch(api).then(res => res.json()).then(items => {
-   items.map(item => {
-      store.dispatch({ type: "ADD", item });
-   })
+   items.map(item => (
+      store.dispatch({ type: "ADD", item })
+   ))
 });
 
 ReactDOM.render(
