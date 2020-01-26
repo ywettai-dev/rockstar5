@@ -9,6 +9,7 @@ const App = props => (
          <li>babel-cli</li>
          <li>preset-react</li>
       </ul>
+      <p>This is awesome! It's neat!</p>
    </div>
    //</MyContext.Provider>
 );
