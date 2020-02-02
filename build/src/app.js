@@ -10,6 +10,7 @@ const App = props => (
          <li>preset-react</li>
       </ul>
       <p>This is awesome! It's neat!</p>
+      <p>webpack-dev-server is lit!</p>
    </div>
    //</MyContext.Provider>
 );
