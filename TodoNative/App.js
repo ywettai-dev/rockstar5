@@ -1,201 +1,151 @@
-import React, { useState, useEffect } from 'react';
-import { StyleSheet, Text, View, FlatList, TextInput, Button, TouchableOpacity } from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
+import React from 'react';
+import {
+  Container,
+  Text,
+  Header,
+  Left,
+  Body,
+  Right,
+  Title,
+  Icon,
+  Button,
+  List,
+  ListItem,
+  Item,
+  Input
+} from 'native-base';
 
-const styles = StyleSheet.create({
-  container: {
-    backgroundColor: '#1cf'
-  },
-  appbar: {
-    padding: 20,
-    paddingTop: 40,
-    backgroundColor: '#1cf',
-    flexDirection: 'row'
-  },
-  title: {
-    fontWeight: '800',
-    color: '#fff',
-    fontSize: 25,
-    flex: 1,
-    marginLeft: 20
-  },
-  item: {
-    padding: 20,
-    flexDirection: "row"
-  },
-  itemText: {
-    fontSize: 20,
-    fontWeight: '500',
-    color: '#fff',
-    flex: 1,
-    marginLeft: 20
-  },
-  add: {
-    flexDirection: 'row'
-  },
-  input: {
-    padding: 20,
-    fontSize: 20,
-    borderColor: '#fff',
-    borderBottomWidth: 1,
-    flex: 1
-  },
-  done: {
-    marginTop: 40,
-    marginLeft: 20
-  },
-  doneTitle: {
-    color: '#fff',
-    fontSize: 25,
-    fontWeight: '800',
-  },
-  clear: {
-    fontWeight: '800',
-    color: '#fff',
-    fontSize: 20,
-    flex: 1,
+class ItemDisc extends React.Component {
+  render() {
+    return (
+      <ListItem icon>
+        <Left>
+          <Button transparent>
+            {
+              this.props.item.status === 0
+                ? <Icon name="ios-square-outline"></Icon>
+                : <Icon name="ios-checkbox-outline"></Icon>
+            }
+          </Button>
+        </Left>
+        <Body>
+          <Text>{this.props.item.subject}</Text>
+        </Body>
+        <Button
+          transparent
+          onPress={() => {
+            this.props.remove(this.props.item._id)
+          }}>
+          <Icon name="ios-trash"></Icon>
+        </Button>
+      </ListItem>
+    )
   }
-});
-
-const Item = props => {
-  return (
-    <View style={styles.item}>
-      <TouchableOpacity onPress={() => {
-        props.toggle(props.item._id)
-      }}>
-        {
-          props.item.status === 0
-            ? <Ionicons name="md-square-outline" size={32}></Ionicons>
-            : <Ionicons name="md-checkbox-outline" size={32}></Ionicons>
-        }
-      </TouchableOpacity>
-      <Text style={styles.itemText}>{props.item.subject}</Text>
-      <TouchableOpacity onPress={() => {
-        props.remove(props.item._id)
-      }}>
-        <Ionicons name="md-trash" size={32}></Ionicons>
-      </TouchableOpacity>
-    </View>
-  )
 }
 
-const api = "http://172.20.10.2:8000/tasks";
+let autoID;
 
-const App = props => {
+class App extends React.Component {
+  state = {
+    isReady: false,
+    items: [
+      { '_id': 1, 'subject': 'apple', 'status': 0 },
+      { '_id': 2, 'subject': 'orange', 'status': 0 },
+      { '_id': 3, 'subject': 'grape', 'status': 0 },
+      { '_id': 4, 'subject': 'cinnamon', 'status': 0 },
+      { '_id': 5, 'subject': 'papaya', 'status': 1 },
+      { '_id': 6, 'subject': 'watermelon', 'status': 1 },
+    ],
+    input: ''
+  };
 
-  let [items, setItem] = useState([
-    { _id: "1", subject: "Milk", status: 0 },
-    { _id: "2", subject: "Egg", status: 0 },
-    { _id: "3", subject: "Flour", status: 0 },
-    { _id: "4", subject: "Salt", status: 0 },
-  ]);
-
-  let [input, setInput] = useState('');
-
-  useEffect(() => {
-    fetch(api).then(res => res.json()).then(json => {
-      setItem(json);
-    })
-  }, []);
-
-  const add = () => {
-    fetch(api, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({ subject: input })
-    }).then(res => res.json()).then(json => {
-      setItem([...items, json]);
-      setInput('');
+  add = () => {
+    this.setState({
+      items: [
+        ...this.state.items,
+        { '_id': autoID++, 'subject': this.state.input, 'status': 0 }
+      ],
+      input: ''
     });
   }
 
-  const remove = _id => {
-    fetch(`${api}/${_id}`, { method: 'DELETE' });
-    setItem(items.filter(item => item._id !== _id));
+  remove = _id => {
+    this.setState({
+      items: this.state.items.filter(item => item._id !== _id)
+    })
   }
 
-  const clear = () => {
-    fetch(api, { method: 'DELETE' });
-    setItem(items.filter(item => item.status === 0));
+  clear = () => {
+    this.setState({
+      items: this.state.items.filter(item => item.status === 0)
+    })
   }
 
-  const toggle = _id => {
+  render() {
+    return (
+      <Container>
+        <Header transparent>
+          <Left>
+            <Button transparent>
+              <Icon name="ios-menu"></Icon>
+            </Button>
+          </Left>
+          <Body>
+            <Title>Todoru</Title>
+          </Body>
+          <Right>
+            <Button transparent onPress={this.clear}>
+              <Text>Clear</Text>
+            </Button>
+          </Right>
+        </Header>
 
-    setItem(items.map(item => {
-      if (item._id === _id) {
-        item.status = +!item.status;
-      }
+        <Item regular>
+          <Input
+            onChangeText={(input) => this.setState({ input })}
+            value={this.state.input}
+            placeholder="New todo">
+          </Input>
+          <Button transparent onPress={this.add}>
+            <Icon name="ios-add-circle"></Icon>
+          </Button>
+        </Item>
 
-      fetch(`${api}/${_id}`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ status: item.status })
-      });
+        <List>
+          <ListItem itemDivider>
+            <Text>Todos</Text>
+          </ListItem>
+          {
+            this.state.items.filter(i => i.status === 0).map(item => {
+              return (
+                <ItemDisc
+                  item={item}
+                  key={item._id}
+                  remove={this.remove}
+                />
+              )
+            })
+          }
+        </List>
 
-      return item;
-    }));
+        <List>
+          <ListItem itemDivider>
+            <Text>Done</Text>
+          </ListItem>
+          {
+            this.state.items.filter(i => i.status === 1).map(item => {
+              return (
+                <ItemDisc
+                  item={item}
+                  key={item._id}
+                />
+              )
+            })
+          }
+        </List>
+      </Container>
+    )
   }
-
-  return (
-    <View style={styles.container}>
-      <View style={styles.appbar}>
-        <Ionicons name="md-list" size={32} color="white"></Ionicons>
-        <Text style={styles.title}>Todo Native</Text>
-        <TouchableOpacity onPress={clear}>
-          <Text style={styles.clear}>CLEAR</Text>
-        </TouchableOpacity>
-      </View>
-      <View style={styles.add}>
-        <TextInput
-          onChangeText={text => setInput(text)}
-          value={input}
-          style={styles.input}
-        />
-        <TouchableOpacity onPress={add}>
-          <Ionicons name="ios-add-circle" size={32} color="white"></Ionicons>
-        </TouchableOpacity>
-      </View>
-      <View>
-        <FlatList
-          data={items.filter(item => item.status === 0)}
-          renderItem={({ item }) => {
-            return (
-              <Item
-                item={item}
-                remove={remove}
-                toggle={toggle}
-                keyExtractor={item => item._id}
-              />
-            )
-          }}
-          keyExtractor={item => item._id}
-        />
-        <View style={styles.done}>
-          <Text style={styles.doneTitle}>✅ Done List</Text>
-        </View>
-        <FlatList
-          data={items.filter(item => item.status === 1)}
-          renderItem={({ item }) => {
-            return (
-              <Item
-                item={item}
-                remove={remove}
-                toggle={toggle}
-                keyExtractor={item => item._id}
-              />
-            )
-          }}
-          keyExtractor={item => item._id}
-        />
-      </View>
-    </View>
-  );
 }
 
 export default App;
-
-
