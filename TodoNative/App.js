@@ -20,7 +20,12 @@ class ItemDisc extends React.Component {
     return (
       <ListItem icon>
         <Left>
-          <Button transparent>
+          <Button
+            transparent
+            onPress={() => {
+              this.props.toggle(this.props.item._id)
+            }}
+          >
             {
               this.props.item.status === 0
                 ? <Icon name="ios-square-outline"></Icon>
@@ -46,17 +51,19 @@ class ItemDisc extends React.Component {
 let autoID;
 
 class App extends React.Component {
+
+  api = "http://172.20.10.2:8000/tasks";
+
+  componentDidMount() {
+    fetch(this.api).then(res => res.json()).then(items => {
+      this.setState({ items });
+    });
+  }
+
   state = {
     isReady: false,
-    items: [
-      { '_id': 1, 'subject': 'apple', 'status': 0 },
-      { '_id': 2, 'subject': 'orange', 'status': 0 },
-      { '_id': 3, 'subject': 'grape', 'status': 0 },
-      { '_id': 4, 'subject': 'cinnamon', 'status': 0 },
-      { '_id': 5, 'subject': 'papaya', 'status': 1 },
-      { '_id': 6, 'subject': 'watermelon', 'status': 1 },
-    ],
-    input: ''
+    items: [],
+    //input: ''
   };
 
   add = () => {
@@ -72,6 +79,15 @@ class App extends React.Component {
   remove = _id => {
     this.setState({
       items: this.state.items.filter(item => item._id !== _id)
+    })
+  }
+
+  toggle = _id => {
+    this.setState({
+      items: this.state.items.map(item => {
+        if (item._id === _id) item.status = +!item.status;
+        return item;
+      })
     })
   }
 
@@ -122,6 +138,7 @@ class App extends React.Component {
                   item={item}
                   key={item._id}
                   remove={this.remove}
+                  toggle={this.toggle}
                 />
               )
             })
@@ -138,6 +155,8 @@ class App extends React.Component {
                 <ItemDisc
                   item={item}
                   key={item._id}
+                  remove={this.remove}
+                  toggle={this.toggle}
                 />
               )
             })

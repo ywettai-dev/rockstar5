@@ -1,0 +1,14 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Item Component 1`] = `
+<div>
+  <li>
+    <a
+      href="#/"
+      onClick={[Function]}
+    >
+      ×
+    </a>
+  </li>
+</div>
+`;
